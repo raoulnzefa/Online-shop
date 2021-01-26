@@ -1,21 +1,17 @@
 <template>
 	<div class="main-wrapper">
-		<p>{{title}}</p>
-		<Catalog />
-		<Cart />
+		<keep-alive>
+			<router-view></router-view>
+		</keep-alive>
 	</div>
 </template>
 
 <script>
-	import Catalog from './Catalog'
-	import Cart from './Cart'
+	import { mapGetters } from 'vuex'
 
 	export default {
 		name: 'main-wrapper',
-		components: {
-			Catalog,
-			Cart
-		},
+		components: {},
 		props: {},
 		data() {
 			return {
@@ -23,14 +19,10 @@
 			}
 		},
 		computed: {
-
+			...mapGetters(['CART'])
 		},
-		methods: {
-
-		},
-		watch: {
-
-		},
+		methods: {},
+		watch: {},
 		mounted() {
 			console.log('Hello i am alive!')
 		}

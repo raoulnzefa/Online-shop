@@ -1,11 +1,11 @@
 <template>
 	<div class="catalog-item">
-		<img class="catalog-item__img" :src="require(`../assets/images/${product_data.image}`)"  alt="img">
-		<p class="catalog-item__name">{{product_data.name}}</p>
-		<p class="catalog-item__price">Price: {{product_data.price}} &#8381;</p>
+		<img class="catalog-item__img" :src="require(`../assets/images/${productData.image}`)"  alt="img">
+		<p class="catalog-item__name">{{ productData.name }}</p>
+		<p class="catalog-item__price">Price: {{ Math.floor(productData.price) }} &#8381;</p>
 		<button 
 			class="catalog-item__btn btn" 
-			@click="sendDataToParent">
+			@click="addToCart">
 			Add to cart
 		</button>
 	</div>
@@ -14,34 +14,27 @@
 <script>
 	export default {
 		name: 'catalog-item',
-		components: {
-
-		},
+		components: {},
 		props: {
-			product_data: {
+			productData: {
 				type: Object,
-				default() {
+				default() {	
 					return {}
 				}
 			}
 		},
 		data() {
-			return {
-
-			}
+			return {}
 		},
-		computed: {
-
-		},
+		computed: {},
 		methods: {
-			sendDataToParent() {
-				this.$emit('sendArticle', this.product_data.article)
+			addToCart() {
+				this.$emit('addToCart', this.productData)
 			}
 		},
-		watch: {
-
-		},
-		mounted() { }
+		watch: {},
+		mounted() {
+		}
 	}
 </script>
 

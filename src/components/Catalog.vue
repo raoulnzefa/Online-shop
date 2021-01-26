@@ -1,12 +1,17 @@
 <template>
 	<div class="catalog">
+		<router-link :to="{name: 'cart', params: {cartData: CART}}">
+			<div class="catalog__link">Cart: {{ totalCart }}</div>
+		</router-link>
+		
 		<h1>Catalog</h1>
+
 		<div class="catalog__list">
 			<CatalogItem 
-				v-for="product in products"
+				v-for="product in PRODUCTS"
 				:key="product.article"
-				:product_data="product"
-				@sendArticle="showChildArticleInConsole"
+				:productData="product"
+				@addToCart="addToCart"
 			/>
 		</div>
 	</div>
@@ -14,6 +19,7 @@
 
 <script>
 	import CatalogItem from './CatalogItem'
+	import {mapActions, mapGetters} from 'vuex'
 
 	export default {
 		name: 'catalog',
@@ -23,70 +29,51 @@
 		props: {},
 		data() {
 			return {
-				products: [
-					{
-						image: "1.jpg",
-						name: "T-shirt 1",
-						price: 2100,
-						article: "T1",
-						available: true,
-						category: "Мужские"
-					},
-					{
-						image: "2.jpg",
-						name: "T-shirt 2",
-						price: 3150,
-						article: "T2",
-						available: true,
-						category: "Женские"
-					},
-					{
-						image: "3.jpg",
-						name: "T-shirt 3",
-						price: 4200,
-						article: "T3",
-						available: false,
-						category: "Женские"
-					},
-					{
-						image: "4.jpg",
-						name: "T-shirt 4",
-						price: 5300,
-						article: "T4",
-						available: true,
-						category: "Мужские"
-					},
-					{
-						image: "5.jpg",
-						name: "T-shirt 5",
-						price: 6500,
-						article: "T5",
-						available: false,
-						category: "Женские"
-					},
-					{
-						image: "6.jpeg",
-						name: "T-shirt 6",
-						price: 8700,
-						article: "T6",
-						available: true,
-						category: "Женские"
-					}
-				]
+				
 			}
 		},
 		computed: {
+			...mapGetters([
+				'PRODUCTS',
+				'CART'
+			]),
+			totalCart() {
+				if (this.CART.length) {
+					let result = []
+					
+					for (let item of this.CART) {
+						result.push(item.quantity) 
+					}
+					
+					result = result.reduce((sum, el) => {
+						return sum + el
+					})
 
-		},
-		methods: {
-			showChildArticleInConsole(data) {
-				console.log(data)
+					return result
+				} else {
+					return 0
+				}
 			}
 		},
-		watch: {
+		methods: {
+			...mapActions([
+				'GET_RRODUCTS_FROM_API',
+				'ADD_TO_CART'
+			]),
 
+			addToCart(data) {
+				this.ADD_TO_CART(data)
+			},
 		},
-		mounted() { }
+		watch: {},
+		mounted() { 
+			this.GET_RRODUCTS_FROM_API()
+			.then((response) => {
+				if (response) {
+					console.log('Data arrivd!')
+				}
+			})
+		}
 	}
 </script>
 
@@ -97,6 +84,14 @@
 			flex-wrap: wrap;
 			justify-content: space-between;
 			align-items: center;
+		}
+
+		&__link {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			padding: $padding*2;
+			border: 1px solid #aeaeae
 		}
 	}
 </style>

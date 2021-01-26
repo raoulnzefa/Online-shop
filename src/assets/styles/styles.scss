@@ -2,4 +2,22 @@
 
 .btn {
 	border-radius: $radius;
+	cursor: pointer;
+	background: rgb(50, 66, 66);
+	// transition: all .8s;
+	border: none;
+	padding: $padding;
+	
+	color: #fff;
+	
+	&:focus, :active {
+		outline: none;
+	}
+
+	&:hover {
+		background: rgb(9, 163, 163);
+	}
+
+	
 }
+
